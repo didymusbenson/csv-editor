@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <script>
+        var isAdvancedUpload = (function() {
+            var div = document.createElement('div');
+            return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) && 'FormData' in window && 'FileReader' in window;
+        })();
+
+    </script>
+</head>
+
+<body>
+    <h2>1. Upload a file here.</h2>
+    <form class="box" method="post" action="" enctype="multipart/form-data">
+        <label>
+            <input type="file" name="file" id="file" /> 
+        </label>
+    </form>
+    <script>
+        var $form = $('.box');
+
+        if (isAdvancedUpload) {
+            $form.addClass('has-advanced-upload');
+
+            var droppedFiles = false;
+
+            $form.on('drag dragstart dragend dragover dragenter dragleave drop', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                })
+                .on('dragover dragenter', function() {
+                    $form.addClass('is-dragover');
+                })
+                .on('dragleave dragend drop', function() {
+                    $form.removeClass('is-dragover');
+                })
+                .on('drop', function(e) {
+                    droppedFiles = e.originalEvent.dataTransfer.files;
+                });
+
+        }
+
+    </script>
+</body>
+
+</html>
