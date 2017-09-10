@@ -9,23 +9,91 @@
             font-family: sans-serif;
         }
 
+        #UI>div:nth-child(odd) {
+            background-color: lightgray;
+        }
+
+        h3 {
+            margin-bottom: 0;
+        }
+
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.10/handlebars.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-dsv/1.0.7/d3-dsv.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ace.js"></script>
 </head>
 
 <body>
+    <script id="template" type="text/x-handlebars-template">
+        passage text,skill,level,question name,function,topic,difficulty level,question text,answertext1,answertext2,answertext3,answertext4 {{#each this}}
+        <div id="row{{@index}}">
+            <h3>passage text</h3>
+            <textarea>{{passagetext}}</textarea>
+            <h3>skill</h3>
+            <input value="{{skill}}" />
+            <h3>level</h3>
+            <input value="{{level}}" />
+            <h3>question name</h3>
+            <input value="{{questionname}}" />
+            <h3>function</h3>
+            <input value="{{function}}" />
+            <h3>topic</h3>
+            <input value="{{topic}}" />
+            <h3>difficulty level</h3>
+            <input value="{{difficultylevel}}" />
+            <h3>question text</h3>
+            <input value="{{questiontext}}" />
+            <h3>answertext1</h3>
+            <input value="{{answertext1}}" />
+            <h3>answertext2</h3>
+            <input value="{{answertext2}}" />
+            <h3>answertext3</h3>
+            <input value="{{answertext3}}" />
+            <h3>answertext4</h3>
+            <input value="{{answertext4}}" />
+        </div>
+        {{/each}}
+    </script>
+
     <h2>1. Upload a file here.</h2>
     <input type="file" name="file" id="file" />
+
+    <h2>2. Edit CSV Here</h2>
+    <div id="UI"></div>
     <script>
         document.querySelector('input').addEventListener('change', getFile)
+
+        function addAce(ele) {
+            console.log(ele);
+            var editor = ace.edit(ele);
+            editor.setTheme("ace/theme/iplastic");
+            editor.getSession().setMode("ace/mode/html");
+        }
+
+        function makeUI(data) {
+            console.log(data)
+            var template = Handlebars.compile(document.querySelector('#template').innerHTML);
+            document.querySelector('#UI').innerHTML = template(data);
+
+            //add ace
+            Array.from(document.querySelectorAll('textarea')).forEach(addAce)
+        }
 
         function getFile() {
             var file = this.files[0]
             var reader = new FileReader();
             reader.onload = function(e) {
-                console.log(e.target.result);
+                var fileData = e.target.result;
+                console.log(fileData);
+                //need to fix the spaces in the obj props 
+                makeUI(d3.csvParse(fileData).map(function(item) {
+                    return Object.keys(item).reduce(function(objOut, key) {
+                        objOut[key.replace(/ /g, '')] = item[key];
+                        return objOut;
+                    }, {});
+                }));
             };
-
             reader.readAsText(file);
         }
 
