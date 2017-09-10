@@ -11,45 +11,22 @@
 
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-    <script>
-        var isAdvancedUpload = (function() {
-            var div = document.createElement('div');
-            return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) && 'FormData' in window && 'FileReader' in window;
-        })();
-
-    </script>
 </head>
 
 <body>
     <h2>1. Upload a file here.</h2>
-    <form class="box" method="post" action="" enctype="multipart/form-data">
-        <label>
-            <input type="file" name="file" id="file" /> 
-        </label>
-    </form>
+    <input type="file" name="file" id="file" />
     <script>
-        var $form = $('.box');
+        document.querySelector('input').addEventListener('change', getFile)
 
-        if (isAdvancedUpload) {
-            $form.addClass('has-advanced-upload');
+        function getFile() {
+            var file = this.files[0]
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                console.log(e.target.result);
+            };
 
-            var droppedFiles = false;
-
-            $form.on('drag dragstart dragend dragover dragenter dragleave drop', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                })
-                .on('dragover dragenter', function() {
-                    $form.addClass('is-dragover');
-                })
-                .on('dragleave dragend drop', function() {
-                    $form.removeClass('is-dragover');
-                })
-                .on('drop', function(e) {
-                    droppedFiles = e.originalEvent.dataTransfer.files;
-                });
-
+            reader.readAsText(file);
         }
 
     </script>
