@@ -156,6 +156,7 @@
 
                 //need to fix the spaces in the obj props 
                 makeUI(d3.csvParse(fileData).map(function(item) {
+                    spaces = Object.keys(item);
                     return Object.keys(item).reduce(function(objOut, key) {
                         objOut[key.replace(/ /g, '')] = item[key];
                         return objOut;
@@ -187,6 +188,7 @@
         }
 
         function downloadit(){
+
             var exported = d3.csvFormat(file);
 
             download(exported, "output.csv", "text/plain");
