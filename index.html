@@ -17,11 +17,18 @@
             margin-bottom: 0;
         }
 
+        .editor {
+            height: 200px;
+        }
+        .half{width:50%; float:left;}
+
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.10/handlebars.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-dsv/1.0.7/d3-dsv.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ace.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/downloadjs/1.4.7/download.min.js"></script>
+
 </head>
 
 <body>
@@ -55,37 +62,98 @@
         </div>
         {{/each}}
     </script>
-
+<div class="half">
     <h2>1. Upload a file here.</h2>
     <input type="file" name="file" id="file" />
-
+    </div>
+    <div class="half">
+    <h2>3. Redownload file here.</h2>
+        <button onclick="downloadit()">download</button>
+    </div>
     <h2>2. Edit CSV Here</h2>
     <div id="UI"></div>
     <script>
+        var file;
+        var spaces;
+
         document.querySelector('input').addEventListener('change', getFile)
 
-        function addAce(ele) {
-            console.log(ele);
-            var editor = ace.edit(ele);
-            editor.setTheme("ace/theme/iplastic");
-            editor.getSession().setMode("ace/mode/html");
+        //        function addAce(ele) {
+        //            console.log(ele);
+        //            var editor = ace.edit(ele);
+        //            editor.setTheme("ace/theme/iplastic");
+        //            editor.getSession().setMode("ace/mode/html");
+        //        }
+
+        function addAceEditor(stringIn, index) {
+            return '<div class="editor" id="editor' + (index + 1) + '" ><textarea>' + stringIn + '</textarea></div>';
         }
 
         function makeUI(data) {
             console.log(data)
+            file = data;
+            console.log(file);
             var template = Handlebars.compile(document.querySelector('#template').innerHTML);
             document.querySelector('#UI').innerHTML = template(data);
 
             //add ace
-            Array.from(document.querySelectorAll('textarea')).forEach(addAce)
+            //Array.from(document.querySelectorAll('textarea')).forEach(addAce)
+            var needsAce = document.getElementsByTagName("textarea");
+
+            for (var i = 0; i < needsAce.length; i++) {
+                needsAce[i].outerHTML = addAceEditor(needsAce[i].innerHTML, i);
+            }
+            renderAceEditor();
+            addListeners();
         }
+
+        function addListeners() {
+            var inputs = document.getElementsByTagName("input");
+
+            for (var i = 0; i < inputs.length; i++) {
+                inputs[i].addEventListener('keyup', function(event) {
+                    saveData(this);
+                }, false);
+            }
+            var editors = document.getElementsByClassName("editor");
+
+            for (var i = 0; i < editors.length; i++) {
+                editors[i].addEventListener('keyup', function(event) {
+                    saveData(this);
+                }, false);
+            }
+
+        }
+
+
+
+        function renderAceEditor() {
+            $('.editor').each(function(index, element) {
+                // Make the document object to count the lines
+
+
+                var editor = ace.edit(element);
+
+                editor.setTheme("ace/theme/chrome");
+
+                editor.setAutoScrollEditorIntoView(true);
+                editor.setOptions({
+                    fontFamily: "monospace",
+                    fontSize: "16px",
+                    // Only display 30 lines, if result is longer than 30 lines
+                    minLines: 10
+                })
+                editor.getSession().setMode("ace/mode/html");
+            });
+        }
+
 
         function getFile() {
             var file = this.files[0]
             var reader = new FileReader();
             reader.onload = function(e) {
                 var fileData = e.target.result;
-                console.log(fileData);
+
                 //need to fix the spaces in the obj props 
                 makeUI(d3.csvParse(fileData).map(function(item) {
                     return Object.keys(item).reduce(function(objOut, key) {
@@ -95,6 +163,33 @@
                 }));
             };
             reader.readAsText(file);
+        }
+
+        function saveData(element) {
+            // Get which row of the CSV to change
+            var row = parseInt(element.parentElement.id.split("row")[1]);
+            var columnName = element.previousElementSibling.innerHTML.replace(' ','');
+
+//            console.log(row, columnName);
+            console.log(file[row][columnName]);
+            if (element.classList.contains("editor")){
+                var editor = ace.edit(element)
+               //console.log(editor.getValue());
+                file[row][columnName] = editor.getValue();
+
+            }
+            else{
+               file[row][columnName] = element.value;
+               // console.log(file[row][columnName])
+            }
+
+//            console.log(file[row][columnName]);
+        }
+
+        function downloadit(){
+            var exported = d3.csvFormat(file);
+
+            download(exported, "output.csv", "text/plain");
         }
 
     </script>
