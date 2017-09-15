@@ -20,13 +20,18 @@
         .editor {
             min-height: 300px;
         }
-        .half{width:50%; float:left;}
+
+        .half {
+            width: 50%;
+            float: left;
+        }
 
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.10/handlebars.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-dsv/1.0.7/d3-dsv.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ace.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.6.6/tinymce.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/downloadjs/1.4.7/download.min.js"></script>
 
 </head>
@@ -62,12 +67,12 @@
         </div>
         {{/each}}
     </script>
-<div class="half">
-    <h2>1. Upload a file here.</h2>
-    <input type="file" name="file" id="file" />
+    <div class="half">
+        <h2>1. Upload a file here.</h2>
+        <input type="file" name="file" id="file" />
     </div>
     <div class="half">
-    <h2>3. Redownload file here.</h2>
+        <h2>3. Redownload file here.</h2>
         <button onclick="downloadit()">download</button>
     </div>
     <h2>2. Edit CSV Here</h2>
@@ -89,6 +94,30 @@
             return '<div class="editor" id="editor' + (index + 1) + '" ><textarea>' + stringIn + '</textarea></div>';
         }
 
+        function addTinyMCE() {
+
+            tinymce.init({
+                selector: 'textarea',
+                height: 500,
+                menubar: false,
+                plugins: [
+                    'advlist autolink lists link image charmap print preview anchor textcolor',
+                    'searchreplace visualblocks code fullscreen',
+                    'insertdatetime media table contextmenu paste code help'
+                ],
+                toolbar: 'insert | undo redo |  styleselect | bold italic backcolor  | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | code | help',
+                content_css: [
+                    'http://fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+                    'http://www.tinymce.com/css/codepen.min.css'
+                ],
+                init_instance_callback: function(editor) {
+                    editor.on('Change', function(e) {
+                        console.log('Editor contents was changed.');
+                    });
+                }
+            });
+        }
+
         function makeUI(data) {
             console.log(data)
             file = data;
@@ -98,16 +127,23 @@
 
             //add ace
             //Array.from(document.querySelectorAll('textarea')).forEach(addAce)
-            var needsAce = document.getElementsByTagName("textarea");
+            function addAce() {
 
-            for (var i = 0; i < needsAce.length; i++) {
-                needsAce[i].outerHTML = addAceEditor(needsAce[i].innerHTML, i);
+                var needsAce = document.getElementsByTagName("textarea");
+
+                for (var i = 0; i < needsAce.length; i++) {
+                    needsAce[i].outerHTML = addAceEditor(needsAce[i].innerHTML, i);
+                }
+                renderAceEditor();
             }
-            renderAceEditor();
+
+            //addAce();
+            addTinyMCE();
             addListeners();
         }
 
         function addListeners() {
+            //add change event listener to inputs
             var inputs = document.getElementsByTagName("input");
 
             for (var i = 0; i < inputs.length; i++) {
@@ -115,13 +151,19 @@
                     saveData(this);
                 }, false);
             }
-            var editors = document.getElementsByClassName("editor");
 
-            for (var i = 0; i < editors.length; i++) {
-                editors[i].addEventListener('keyup', function(event) {
-                    saveData(this);
-                }, false);
+            //add change event listener to editors
+            function addChangeToAce() {
+
+                var editors = document.getElementsByClassName("editor");
+
+                for (var i = 0; i < editors.length; i++) {
+                    editors[i].addEventListener('keyup', function(event) {
+                        saveData(this);
+                    }, false);
+                }
             }
+
 
         }
 
@@ -169,25 +211,24 @@
         function saveData(element) {
             // Get which row of the CSV to change
             var row = parseInt(element.parentElement.id.split("row")[1]);
-            var columnName = element.previousElementSibling.innerHTML.replace(' ','');
+            var columnName = element.previousElementSibling.innerHTML.replace(' ', '');
 
-//            console.log(row, columnName);
-//            console.log(file[row][columnName]);
-            if (element.classList.contains("editor")){
+            //            console.log(row, columnName);
+            //            console.log(file[row][columnName]);
+            if (element.classList.contains("editor")) {
                 var editor = ace.edit(element)
-               //console.log(editor.getValue());
+                //console.log(editor.getValue());
                 file[row][columnName] = editor.getValue();
 
-            }
-            else{
-               file[row][columnName] = element.value;
-               // console.log(file[row][columnName])
+            } else {
+                file[row][columnName] = element.value;
+                // console.log(file[row][columnName])
             }
 
-//            console.log(file[row][columnName]);
+            //            console.log(file[row][columnName]);
         }
 
-        function downloadit(){
+        function downloadit() {
 
             var exported = d3.csvFormat(file);
 

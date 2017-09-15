@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.6.6/tinymce.min.js"></script>
+    <script>
+        function full() {
+
+            tinymce.init({
+                selector: 'textarea',
+                height: 500,
+                theme: 'modern',
+                plugins: [
+                    'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+                    'searchreplace wordcount visualblocks visualchars code fullscreen spellchecker',
+                    'insertdatetime media nonbreaking save table contextmenu directionality',
+                    'template paste textcolor colorpicker textpattern imagetools codesample toc help emoticons hr'
+                ],
+                toolbar1: 'formatselect | bold italic  strikethrough  forecolor backcolor | link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat',
+                image_advtab: true,
+                templates: [{
+                        title: 'Test template 1',
+                        content: '<p>Test 1</p>'
+                    },
+                    {
+                        title: 'Test template 2',
+                        content: 'Test 2'
+                    }
+                ],
+                content_css: [
+                    'http://fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+                    'http://www.tinymce.com/css/codepen.min.css'
+                ]
+            });
+
+        }
+
+        function basic() {
+
+            tinymce.init({
+                selector: 'textarea',
+                height: 500,
+                menubar: false,
+                plugins: [
+                    'advlist autolink lists link image charmap print preview anchor textcolor',
+                    'searchreplace visualblocks code fullscreen',
+                    'insertdatetime media table contextmenu paste code help'
+                ],
+                toolbar: 'insert | undo redo |  styleselect | bold italic backcolor  | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | code | help',
+                content_css: [
+                    'http://fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+                    'http://www.tinymce.com/css/codepen.min.css'
+                ]
+            });
+        }
+        basic();
+
+    </script>
+</head>
+
+<body>
+    <textarea>name,10,16,find,replace
+ellipsis,133,85,UmmYes,&hellip;
+EURO,128,80,100€ wi,&euro;</textarea>
+</body>
+
+</html>
