@@ -80,7 +80,7 @@
     <script>
         var file;
         var spaces;
-
+        var file_name;
         document.querySelector('input').addEventListener('change', getFile)
 
         //        function addAce(ele) {
@@ -98,7 +98,8 @@
 
             tinymce.init({
                 selector: 'textarea',
-                height: 500,
+                height: 300,
+                width: '50%',
                 menubar: false,
                 plugins: [
                     'advlist autolink lists link image charmap print preview anchor textcolor',
@@ -111,8 +112,13 @@
                     'http://www.tinymce.com/css/codepen.min.css'
                 ],
                 init_instance_callback: function(editor) {
-                    editor.on('Change', function(e) {
-                        console.log('Editor contents was changed.');
+                    editor.on('KeyUp', function(e) {
+                        //console.log(editor.getContent(), this.id);
+                        var textarea = document.querySelector("#" + this.id)
+                        textarea.dataset.editortext = (editor.getContent());
+                        saveData(textarea);
+                        //console.log(textarea.dataset.editortext);
+
                     });
                 }
             });
@@ -139,6 +145,7 @@
 
             //addAce();
             addTinyMCE();
+
             addListeners();
         }
 
@@ -153,16 +160,16 @@
             }
 
             //add change event listener to editors
-            function addChangeToAce() {
 
-                var editors = document.getElementsByClassName("editor");
 
-                for (var i = 0; i < editors.length; i++) {
-                    editors[i].addEventListener('keyup', function(event) {
-                        saveData(this);
-                    }, false);
-                }
+            var editors = document.querySelectorAll("textarea");
+
+            for (var i = 0; i < editors.length; i++) {
+                editors[i].addEventListener('keyup', function(event) {
+                    saveData(this);
+                }, false);
             }
+
 
 
         }
@@ -204,8 +211,12 @@
                         return objOut;
                     }, {});
                 }));
+                file_name = document.querySelector("#file").value;
+                //This should work the first time but it doesn't
+                file_name = file_name.split("fakepath")[1].replace("\\", "");
             };
             reader.readAsText(file);
+
         }
 
         function saveData(element) {
@@ -215,12 +226,15 @@
 
             //            console.log(row, columnName);
             //            console.log(file[row][columnName]);
-            if (element.classList.contains("editor")) {
-                var editor = ace.edit(element)
-                //console.log(editor.getValue());
-                file[row][columnName] = editor.getValue();
-
+            if (element.tagName == "TEXTAREA") {
+                // DO IT TWICE, BECAUSE MCE
+                var columnName = element.previousElementSibling.previousElementSibling.innerHTML.replace(' ', '');
+                //console.log(element.dataset.editortext);
+                //console.log(file[row][columnName]);
+                file[row][columnName] = element.dataset.editortext;
+                //console.log(file[row][columnName]);
             } else {
+                var columnName = element.previousElementSibling.innerHTML.replace(' ', '');
                 file[row][columnName] = element.value;
                 // console.log(file[row][columnName])
             }
@@ -228,11 +242,10 @@
             //            console.log(file[row][columnName]);
         }
 
+
         function downloadit() {
-
             var exported = d3.csvFormat(file);
-
-            download(exported, "output.csv", "text/plain");
+            download(exported, file_name, "text/plain");
         }
 
     </script>
