@@ -31,7 +31,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.10/handlebars.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-dsv/1.0.7/d3-dsv.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ace.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.6.6/tinymce.min.js"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.6.6/tinymce.min.js"></script>-->
+    <script src="./tinymce/js/tinymce/tinymce.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/downloadjs/1.4.7/download.min.js"></script>
 
 </head>
@@ -104,9 +105,9 @@
                 plugins: [
                     'advlist autolink lists link image charmap print preview anchor textcolor',
                     'searchreplace visualblocks code fullscreen',
-                    'insertdatetime media table contextmenu paste code help'
+                    'insertdatetime media table contextmenu paste definitionlist code help'
                 ],
-                toolbar: 'insert | undo redo |  styleselect | bold italic backcolor  | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | code | help',
+                toolbar: 'insert | undo redo |  styleselect | bold italic backcolor  | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | ToggleDefinitionList ToggleDefinitionItem | code | help',
                 content_css: [
                     'http://fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
                     'http://www.tinymce.com/css/codepen.min.css'
@@ -115,7 +116,7 @@
                     editor.on('KeyUp', function(e) {
                         //console.log(editor.getContent(), this.id);
                         var textarea = document.querySelector("#" + this.id)
-                        textarea.dataset.editortext = (editor.getContent());
+                        textarea.dataset.editortext = (editor.getContent({format: 'raw'}));
                         saveData(textarea);
                         //console.log(textarea.dataset.editortext);
 
