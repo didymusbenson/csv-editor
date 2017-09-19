@@ -5,26 +5,6 @@
     <meta charset="utf-8">
     <title></title>
     <style>
-        body {
-            font-family: sans-serif;
-        }
-
-        #UI>div:nth-child(odd) {
-            background-color: lightgray;
-        }
-
-        h3 {
-            margin-bottom: 0;
-        }
-
-        .editor {
-            min-height: 300px;
-        }
-
-        .half {
-            width: 50%;
-            float: left;
-        }
 
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -39,11 +19,14 @@
 
 <body>
     <script id="template" type="text/x-handlebars-template">
-        passage text,skill,level,question name,function,topic,difficulty level,question text,answertext1,answertext2,answertext3,answertext4 {{#each this}}
+        {{#each this}}
         <div id="row{{@index}}">
+        <div class="left-half">
             <h3>passage text</h3>
             <textarea>{{passagetext}}</textarea>
-            <h3>skill</h3>
+        </div>
+        <div class="right-half">
+            <div class="left-half"><h3>skill</h3>
             <input value="{{skill}}" />
             <h3>level</h3>
             <input value="{{level}}" />
@@ -55,7 +38,8 @@
             <input value="{{topic}}" />
             <h3>difficulty level</h3>
             <input value="{{difficultylevel}}" />
-            <h3>question text</h3>
+            </div><div class="right-half">
+                <h3>question text</h3>
             <input value="{{questiontext}}" />
             <h3>answertext1</h3>
             <input value="{{answertext1}}" />
@@ -65,9 +49,11 @@
             <input value="{{answertext3}}" />
             <h3>answertext4</h3>
             <input value="{{answertext4}}" />
+        </div></div>
         </div>
         {{/each}}
     </script>
+    <div class="top">
     <div class="half">
         <h2>1. Upload a file here.</h2>
         <input type="file" name="file" id="file" />
@@ -76,9 +62,19 @@
         <h2>3. Redownload file here.</h2>
         <button onclick="downloadit()">download</button>
     </div>
+    </div>
+    <div class="bottom">
     <h2>2. Edit CSV Here</h2>
     <div id="UI"></div>
+        </div>
     <script>
+
+if (window.location.search.indexOf('?css=fun') === 0){
+    document.write('<link rel="stylesheet" href="./fun.css" />');
+}
+else{
+    document.write('<link rel="stylesheet" href="./default.css" />');
+}
         var file;
         var spaces;
         var file_name;
@@ -100,7 +96,7 @@
             tinymce.init({
                 selector: 'textarea',
                 height: 300,
-                width: '50%',
+                width: '100%',
                 menubar: false,
                 plugins: [
                     'advlist autolink lists link image charmap print preview anchor textcolor',
@@ -108,10 +104,7 @@
                     'insertdatetime media table contextmenu paste definitionlist code help'
                 ],
                 toolbar: 'insert | undo redo |  styleselect | bold italic backcolor  | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | ToggleDefinitionList ToggleDefinitionItem | code | help',
-                content_css: [
-                    'http://fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
-                    'http://www.tinymce.com/css/codepen.min.css'
-                ],
+                convert_urls: false,
                 init_instance_callback: function(editor) {
                     editor.on('KeyUp', function(e) {
                         //console.log(editor.getContent(), this.id);
