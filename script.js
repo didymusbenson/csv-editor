@@ -3,9 +3,9 @@ if (window.location.search.indexOf('?css=fun') === 0) {
 } else {
     document.write('<link rel="stylesheet" href="./default.css" />');
 }
-var file;
+var file = [];
 var spaces;
-var file_name;
+var file_name = "default.csv";
 var template = Handlebars.compile(document.querySelector('#template').innerHTML);
 document.querySelector('input').addEventListener('change', getFile)
 
@@ -106,8 +106,15 @@ function add_row() {
     //            var new_row = document.createElement('div');
     var ui = document.querySelector("#UI");
     var divs = document.querySelectorAll('#UI > div');
-    var index = parseInt(divs[divs.length - 2].id.split("row")[1]);
-    index++;
+    var index;
+    if (divs.length < 2){
+        index = 0;
+    }
+    else {
+        index = parseInt(divs[divs.length - 2].id.split("row")[1]);
+        index++;
+    }
+
 
     //TODO: function that g
     var new_rows = template([getBlank()]);
