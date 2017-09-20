@@ -75,3 +75,14 @@ h3 {
     color: black;
     transition:0.2s ease-in-out;
 }
+.left-side{
+      width: calc(75% - 15px);
+    float: left;
+}
+.right-side{
+      width: calc(25% - 15px);
+    float: right;
+}
+.answer{
+    width:100%;
+}

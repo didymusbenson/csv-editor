@@ -42,7 +42,7 @@ function addAceEditor(stringIn, index) {
 function addTinyMCE() {
 
     tinymce.init({
-        selector: 'textarea',
+        selector: 'textarea.editor',
         height: 300,
         width: '100%',
         menubar: false,
@@ -214,18 +214,18 @@ function getFile() {
 function saveData(element) {
     // Get which row of the CSV to change
     var row = parseInt(element.parentElement.parentElement.parentElement.id.split("row")[1]);
-    console.log(row);
+//    console.log(row);
     var columnName = element.previousElementSibling.innerHTML.replace(' ', '');
     // Adds a new row to the file data if it doesn't exist yet.
     if (!file[row]) {
-        console.log("this is a new row, the last row is:", file[row - 1]);
+//        console.log("this is a new row, the last row is:", file[row - 1]);
         file.push(getBlank());
         console.log(file[row]);
     }
 
     //            console.log(row, columnName);
     //            console.log(file[row][columnName]);
-    if (element.tagName == "TEXTAREA") {
+    if (element.classList.contains("editor")) {
         // DO IT TWICE, BECAUSE MCE
         var columnName = element.previousElementSibling.previousElementSibling.innerHTML.replace(' ', '');
         //console.log(element.dataset.editortext);

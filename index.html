@@ -24,12 +24,23 @@
         <div class="left-half">
             <div class="left-half">
             <h3>passage text</h3>
-                <textarea>{{passagetext}}</textarea></div><div class="right-half">
+                <textarea class="editor">{{passagetext}}</textarea></div><div class="right-half">
             <h3>question text</h3>
-            <textarea>{{questiontext}}</textarea></div>
+            <textarea class="editor">{{questiontext}}</textarea></div>
         </div>
         <div class="right-half">
-            <div class="left-half"><h3>skill</h3>
+            <div class="left-side">
+
+            <h3>answertext1</h3>
+            <textarea class="answer" rows="3">{{answertext1}}</textarea>
+            <h3>answertext2</h3>
+            <textarea class="answer" rows="3">{{answertext2}}</textarea>
+            <h3>answertext3</h3>
+            <textarea class="answer" rows="3">{{answertext3}}</textarea>
+            <h3>answertext4</h3>
+            <textarea class="answer" rows="3">{{answertext4}}</textarea>
+        </div>
+            <div class="right-side"><h3>skill</h3>
             <input value="{{skill}}" />
             <h3>level</h3>
             <input value="{{level}}" />
@@ -41,17 +52,8 @@
             <input value="{{topic}}" />
             <h3>difficulty level</h3>
             <input value="{{difficultylevel}}" />
-            </div><div class="right-half">
-
-            <h3>answertext1</h3>
-            <input value="{{answertext1}}" />
-            <h3>answertext2</h3>
-            <input value="{{answertext2}}" />
-            <h3>answertext3</h3>
-            <input value="{{answertext3}}" />
-            <h3>answertext4</h3>
-            <input value="{{answertext4}}" />
-        </div></div>
+            </div>
+        </div>
         </div>
         {{/each}}
     </script>
