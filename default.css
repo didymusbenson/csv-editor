@@ -20,7 +20,7 @@ h3 {
 }
 #UI > div {
     margin-bottom: 15px;
-    border: 1px solid black;
+    border: 2px solid black;
     width: calc(100% - 30px);
     display: inline-block;
     border-radius: 15px;
