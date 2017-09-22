@@ -153,11 +153,13 @@ function addListeners() {
 
 }
 function removeRow(id){
+    if( confirm("Are you sure you want to remove this row? Click \"OK\" to continue.") == true){
     var row = parseInt(id.split("row")[1]);
     //replace that row with blank values
     file[row] = getBlank();
     var toRemove = document.querySelector("#" + id);
     toRemove.parentElement.removeChild(toRemove);
+    }
 }
 
 
