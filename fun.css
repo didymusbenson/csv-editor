@@ -1,37 +1,104 @@
-        body {
-            font-family: sans-serif;
-            padding:15px;
-        }
+@import url('https://fonts.googleapis.com/css?family=Yellowtail');
+body {
+    color:white;
+    font-family: sans-serif;
+    padding: 15px;
+    background-color:#181435;
+}
+input {
+    width: 100%;
+}
+h2{
+    color:#FF2442;
+    font-size:45px;
+    font-family:'Yellowtail';
+    transform:rotate(-2deg);
+}
+h3 {
+    color:#FF2442;
+    font-size:35px;
+    font-family:'Yellowtail';
+    margin-top: 0;
+    padding: 10px;
+    padding-left: 0px;
+    margin-bottom: 0;
+    transform:rotate(-2deg);
+    text-align:Center;
+}
+.editor {
+    min-height: 300px;
+}
+.half {
+    width: 50%;
+    float: left;
+}
+#UI > div {
+    margin-bottom: 15px;
+    border: 5px solid #FF2442;
+    width: calc(100% - 30px);
+    display: inline-block;
+    border-radius: 15px;
+    padding: 15px;
+    background-color:#041445;
+}
 
-        input{width:100%;}
+.top input {
+    margin-bottom: 20px;
+}
+.bottom {
+    clear: both;
+}
+.left-half {
+    width: calc(50% - 15px);
+    float: left;
+}
+.right-half {
+    width: calc(50% - 15px);
+    float: right;
+}
+#UI > div.new_row {
+    background-color: white;
+    color: #777;
+    border: 5px dashed #FF2442;
+    text-align: Center;
+    cursor: pointer;
+    font-size: 1.5em;
+    transition:0.2s ease-in-out;
+       background-color: #041445;
+}
+#UI > div.new_row p {
+    margin: 0;
 
-        h3 {
-            margin-top:0;
-            padding:10px;
-            padding-left: 0px;
-            margin-bottom: 0;
-        }
+}
+.plus {
+    text-align: center;
+    color: #777;
+    font-size: 5em;
+}
 
-        .editor {
-            min-height: 300px;
-        }
+#UI > div.new_row:hover {
 
-        .half {
-            width: 50%;
-            float: left;
-        }
-        #UI > div{
-            margin-bottom:15px;
-            border: 1px solid #999;
-            width:calc(100% - 30px);
-            display:inline-block;
-            border-radius:15px;
-            padding:15px;
-        }
-        #UI > div:nth-child(odd) {
-            background-color: lightgray;
-        }
-        .top input{margin-bottom:20px;}
-        .bottom{clear:both;}
-        .left-half{width:calc(50% - 15px); float:left;}
-        .right-half{width:calc(50% - 15px); float:right;}
+    color: black;
+    transform:scale(1.05);
+    text-align: Center;
+    cursor: pointer;
+    font-size: 1.5em;
+    transition:0.2s ease-in-out;
+}
+#UI > div.new_row:hover .plus {
+
+    color: black;
+    transition:0.2s ease-in-out;
+}
+.left-side{
+      width: calc(60% - 15px);
+    float: left;
+}
+.right-side{
+      width: calc(40% - 15px);
+    float: right;
+}
+.answer{
+    width:100%;
+}
+
