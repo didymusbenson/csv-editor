@@ -144,8 +144,22 @@ function addListeners() {
             saveData(this);
         }, false);
     }
+    var closers = document.querySelectorAll(".remove");
+        for (var i = 0; i < closers.length; i++) {
+        closers[i].addEventListener('click', function (event) {
+            removeRow(this.parentElement.id);
+        }, false);
+    }
 
 }
+function removeRow(id){
+    var row = parseInt(id.split("row")[1]);
+    //replace that row with blank values
+    file[row] = getBlank();
+    var toRemove = document.querySelector("#" + id);
+    toRemove.parentElement.removeChild(toRemove);
+}
+
 
 function fixNewRow(id) {
     var row = document.querySelector("#" + id);
@@ -163,6 +177,12 @@ function fixNewRow(id) {
     for (var i = 0; i < editors.length; i++) {
         editors[i].addEventListener('keyup', function (event) {
             saveData(this);
+        }, false);
+    }
+        var closers = row.querySelectorAll(".remove");
+        for (var i = 0; i < closers.length; i++) {
+        closers[i].addEventListener('click', function (event) {
+            removeRow(this.parentElement.id);
         }, false);
     }
 }
