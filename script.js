@@ -69,9 +69,7 @@ function addTinyMCE() {
 }
 
 function makeUI(data) {
-    console.log(data)
     file = data;
-    console.log(file);
     document.querySelector('#UI').innerHTML = template(data);
 
     //add ace
@@ -157,6 +155,8 @@ function removeRow(id){
     var row = parseInt(id.split("row")[1]);
     //replace that row with blank values
     file[row] = getBlank();
+    file[row].toDelete = true;
+    console.log(file[row]);
     var toRemove = document.querySelector("#" + id);
     toRemove.parentElement.removeChild(toRemove);
     }
@@ -242,7 +242,7 @@ function saveData(element) {
     if (!file[row]) {
 //        console.log("this is a new row, the last row is:", file[row - 1]);
         file.push(getBlank());
-        console.log(file[row]);
+//        console.log(file[row]);
     }
 
     //            console.log(row, columnName);
@@ -265,6 +265,10 @@ function saveData(element) {
 
 
 function downloadit() {
+    // filter out the rows that you have deleted.
+    file = file.filter(function(row){return typeof row.toDelete === 'undefined';});
+
+    console.log(file);
     var exported = d3.csvFormat(file);
     download(exported, file_name, "text/plain");
 }
