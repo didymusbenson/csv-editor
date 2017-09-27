@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <style>
+
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.10/handlebars.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-dsv/1.0.7/d3-dsv.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ace.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.6.6/tinymce.min.js"></script>
+<!--    <script src="./tinymce/js/tinymce/tinymce.min.js"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/downloadjs/1.4.7/download.min.js"></script>
+
+</head>
+
+<body>
+    <script id="template" type="text/x-handlebars-template">
+        {{#each this}}
+        <div class="row" id="row{{@index}}">
+            <div class="remove">x</div>
+        <div class="left-half">
+            <div class="left-half">
+            <h3>passage text</h3>
+                <textarea class="editor">{{passagetext}}</textarea></div><div class="right-half">
+            <h3>question text</h3>
+            <textarea class="editor">{{questiontext}}</textarea></div>
+        </div>
+        <div class="right-half">
+            <div class="left-side">
+
+            <h3>answertext1</h3>
+            <textarea class="answer" rows="3">{{answertext1}}</textarea>
+            <h3>answertext2</h3>
+            <textarea class="answer" rows="3">{{answertext2}}</textarea>
+            <h3>answertext3</h3>
+            <textarea class="answer" rows="3">{{answertext3}}</textarea>
+            <h3>answertext4</h3>
+            <textarea class="answer" rows="3">{{answertext4}}</textarea>
+        </div>
+            <div class="right-side"><h3>skill</h3>
+            <input value="{{skill}}" />
+            <h3>level</h3>
+            <input value="{{level}}" />
+            <h3>question name</h3>
+            <input value="{{questionname}}" />
+            <h3>function</h3>
+            <input value="{{function}}" />
+            <h3>topic</h3>
+            <input value="{{topic}}" />
+            <h3>difficulty level</h3>
+            <input value="{{difficultylevel}}" />
+            </div>
+        </div>
+        </div>
+        {{/each}}
+    </script>
+    <div class="top">
+    <div class="half">
+        <h2>1. Upload a file here.</h2>
+        <input type="file" name="file" id="file" />
+    </div>
+    <div class="half">
+        <h2>3. Redownload file here.</h2>
+        <button onclick="downloadit()">download</button>
+    </div>
+    </div>
+    <div class="bottom">
+    <h2>2. Edit CSV Here</h2>
+    <div id="UI">
+        <div class="new_row" onclick="add_row()">
+        <p class="plus">+</p><p>add another question</p>
+        </div>
+    </div>
+        </div>
+    <script src="./script.js">
+
+    </script>
+</body>
+
+</html>

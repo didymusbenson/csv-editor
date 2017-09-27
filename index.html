@@ -5,80 +5,50 @@
     <meta charset="utf-8">
     <title></title>
     <style>
+        body{
+            margin:0;
+        }
+
+        main{
+            margin-top:25vh;
+            width:100%;
+            display:flex; flex-direction:row;
+        }
+        main > div{
+
+            border-radius:15px;
+            width:calc(50% - 60px);
+            border:5px solid  #777;
+            margin:30px;
+            text-align:center;
+             transition:.2s ease-in-out;
+        }
+        a{height:100%;
+                transition:.2s ease-in-out;
+            color:#777;
+            text-decoration:none;
+            width:100%;
+        }
+        a div{ padding: 3em 0;font-size:3em; font-family:sans-serif;  }
+
+        main > div:hover{
+            transition:.5s ease-in-out;
+            border:5px solid black;
+        }
+        main > div:hover a{
+            transition:.5s ease-in-out;
+            color:black;
+        }
 
     </style>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.10/handlebars.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-dsv/1.0.7/d3-dsv.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ace.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.6.6/tinymce.min.js"></script>
-<!--    <script src="./tinymce/js/tinymce/tinymce.min.js"></script>-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/downloadjs/1.4.7/download.min.js"></script>
-
 </head>
 
 <body>
-    <script id="template" type="text/x-handlebars-template">
-        {{#each this}}
-        <div class="row" id="row{{@index}}">
-            <div class="remove">x</div>
-        <div class="left-half">
-            <div class="left-half">
-            <h3>passage text</h3>
-                <textarea class="editor">{{passagetext}}</textarea></div><div class="right-half">
-            <h3>question text</h3>
-            <textarea class="editor">{{questiontext}}</textarea></div>
+    <main>
+        <div><a href="./EC3.html"><div>EnglishConnect 3 Question Editor</div></a></div>
+        <div><a href="./EC12.html"><div>EnglishConnect 1 and 2 Question Editor</div></a>
         </div>
-        <div class="right-half">
-            <div class="left-side">
-
-            <h3>answertext1</h3>
-            <textarea class="answer" rows="3">{{answertext1}}</textarea>
-            <h3>answertext2</h3>
-            <textarea class="answer" rows="3">{{answertext2}}</textarea>
-            <h3>answertext3</h3>
-            <textarea class="answer" rows="3">{{answertext3}}</textarea>
-            <h3>answertext4</h3>
-            <textarea class="answer" rows="3">{{answertext4}}</textarea>
-        </div>
-            <div class="right-side"><h3>skill</h3>
-            <input value="{{skill}}" />
-            <h3>level</h3>
-            <input value="{{level}}" />
-            <h3>question name</h3>
-            <input value="{{questionname}}" />
-            <h3>function</h3>
-            <input value="{{function}}" />
-            <h3>topic</h3>
-            <input value="{{topic}}" />
-            <h3>difficulty level</h3>
-            <input value="{{difficultylevel}}" />
-            </div>
-        </div>
-        </div>
-        {{/each}}
-    </script>
-    <div class="top">
-    <div class="half">
-        <h2>1. Upload a file here.</h2>
-        <input type="file" name="file" id="file" />
-    </div>
-    <div class="half">
-        <h2>3. Redownload file here.</h2>
-        <button onclick="downloadit()">download</button>
-    </div>
-    </div>
-    <div class="bottom">
-    <h2>2. Edit CSV Here</h2>
-    <div id="UI">
-        <div class="new_row" onclick="add_row()">
-        <p class="plus">+</p><p>add another question</p>
-        </div>
-    </div>
-        </div>
-    <script src="./script.js">
-
-    </script>
+    </main>
 </body>
 
 </html>
